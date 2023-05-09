@@ -1,0 +1,81 @@
+<!--DOCTYPE html-->
+<html lang="en">
+	<head>
+		<title>AllThoughts</title>
+		<link rel = "icon" type = "image/png" href = "logo.png" alt = "AllThoughts Logo"/>
+		<link rel="manifest" href="manifest.json"/>
+		<!--link rel="stylesheet" type="text/css" href="style.css"/-->
+		<meta name="title" content="AllThoughts"/>
+		<meta name="description" content="An OzarksMade service designed to be a simple platform where everyone can share their thoughts and view thoughts from people all over the world."/>
+		<meta property="og:image" content="logo.png"/>
+		<meta name="viewport" content="width=device-width"/>
+		<!--script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4011627450504504" crossorigin="anonymous"></script-->
+		<script>
+			navigator.serviceWorker.register("service-worker.js")
+			function addThought(author, thought) {
+				document.getElementById("thoughts").innerHTML =
+				"<image src='" + author.picture + "' style='float:left;height:54px;'></image>" +
+				"<div style='margin-left:60px;background-color:#FFEBEE'>" +
+				"<b>" + author.name + "</b>" +
+				"<p>" + decodeURIComponent(thought.content) + "</p>" +
+				"</div>" +
+				document.getElementById("thoughts").innerHTML;
+			}
+			function insertAd() {
+				document.getElementById("thoughts").innerHTML =
+				"<ins class='adsbygoogle'" +
+				     "style='display:block'" +
+				     "data-ad-format='fluid'" +
+				     "data-ad-layout-key='-ha-y+7-53+i5'" +
+				     "data-ad-client='ca-pub-4011627450504504'" +
+				     "data-ad-slot='3519637756'>" +
+				"</ins>" +
+				document.getElementById("thoughts").innerHTML;
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			}
+			function refresh() {
+				fetch("thoughts.json")
+				.then(result => result.json())
+				.then(thoughts => {
+					document.getElementById("thoughts").innerHTML = "";
+					var loopIndex = 0;
+					for(thought of thoughts.thoughts) {
+						var loopIndex = (loopIndex + 1);
+						if((loopIndex % 10) == 0) {
+							//insertAd();
+						}
+						addThought(thought.author, thought.thought);
+					}
+				});
+			}
+			refresh();
+		</script>
+	</head>
+	<body style="border:3px solid #FF5722;margin:0px;padding:8px;">
+		<header style="background-color:#FF5722;padding:5px;text-align:center;">
+			<h style="color:white;font-size:30px;">AllThoughts</h>
+			<div id="links">
+				by <a href="https://ozarksmade.net">OzarksMade</a>
+			</div>
+		</header>
+		<div id="page" style="bottom:35px;left:11px;overflow:auto;padding-bottom:11px;position:absolute;right:11px;top:80px;">
+			<div id="welcome" style="border-radius:5px;border:solid #FF5722;margin-bottom:10px;margin-top:5px;padding:10px;">
+				<h style="color:#FF5722;font-size:20px;">Welcome to AllThoughts!</h>
+				<p style="margin:0px;">Welcome to AllThoughts. Check out the latest thoughts below.</p>
+			</div>
+			<div id="thoughts"></div>
+			<div id="credits" style="display:table;height:40px;">
+				<p id="copyright" style="display:table-cell;padding-left:8px;margin:0px;vertical-align:bottom;">Copyright ©2021-2023 OzarksMade v2.0</p>
+			</div>
+			<div id="legallinks" style="text-align:center;">
+				<a href="terms.html">Terms</a>
+				<a href="privacy.html">Privacy</a>
+			</div>
+		</div>
+		<div id="footer" style="bottom:3px;height:30px;left:11px;position:absolute;right:11px;text-align:center;">
+			<button onClick="location.href='think.html'" style="background-color:#FFEBEE;border:solid #FF5722;color:#FF5722;font-size:20px;">Think</button>
+			<button onClick="refresh();" style="background-color:#FFEBEE;border:solid #FF5722;color:#FF5722;font-size:20px;">Refresh</button>
+			<button onClick="location.href='about.html'" style="background-color:#FFEBEE;border:solid #FF5722;color:#FF5722;font-size:20px;">About</button>
+		</div>
+	</body>
+</html>

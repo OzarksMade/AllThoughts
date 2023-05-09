@@ -1,0 +1,107 @@
+<!--DOCTYPE html-->
+<html lang="en">
+	<head>
+		<title>Think - AllThoughts</title>
+		<link rel = "icon" type = "image/png" href = "logo.png"/>
+		<link rel="manifest" href="manifest.json"/>
+		<!--link rel="stylesheet" type="text/css" href="style.css"/-->
+		<meta name="title" content="Think a Thought"/>
+		<meta name="description" content="Think a new thought here at AllThoughts."/>
+		<meta name="viewport" content="width=device-width">
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<script>
+			function sendThought() {
+				if(document.getElementById("author-name")) {
+					var newThought = {
+						"author": {
+							"name": document.getElementById('author-name').value,
+							"picture": document.getElementById('author-picture').src
+						},
+						"thought": {
+							"content": encodeURIComponent(document.getElementById('thought').value)
+						}
+					}
+					if(newThought.thought.content.length > 1 && newThought.thought.content.length < 501) {
+						if(grecaptcha.getResponse().length > 0) {
+							fetch((window.origin + "/add"), {
+								headers: {
+									newThought: JSON.stringify(newThought)
+								}
+							});
+							location.href=window.origin;
+						}
+						else {
+							alert("Please check the reCAPTCHA box to continue.");
+						}
+					}
+					else {
+						alert("Sorry, your thought does not meet the requirements. \n\nRequirements: \nThought: 2 - 500 characters.");
+					}
+				}
+				else {
+					alert("You must Continue with Google before Thinking on AllThoughts.");
+				}
+			}
+			function processResponse(response) {
+				fetch((window.origin + "/jwt"), {
+					headers: {
+						token: JSON.stringify(response)
+					}
+				})
+				.then(result => result.json())
+				.then(response => {
+					document.getElementById("author").innerHTML =
+					"<image id='author-picture' style='float:left;height:22px;'></image>" +
+					"<input id='author-name' placeholder='Continue with Google...' style='width:90%;margin-left:5px;' type='text' readonly></input>"
+					document.getElementById("author-name").value = response.name;
+					document.getElementById("author-picture").src = response.picture;
+					document.getElementById("author-name").display = "inline-block";
+					document.getElementById("g_signin_button").innerHTML = "";
+				});
+			}
+		</script>
+		<script src="https://accounts.google.com/gsi/client" async defer></script>
+		<div id="g_id_onload"
+			data-client_id="797821406637-062f7nbsb421uqg63ov47l7h0jbpf2pb.apps.googleusercontent.com"
+			data-callback="processResponse"
+			data-context="continue-with"
+			data-ux_mode="popup"
+			data-auto_select="true">
+		</div>
+	</head>
+	<body style="border:3px solid #FF5722;margin:0px;padding:8px;">
+		<header style="background-color:#FF5722;padding:5px;text-align:center;">
+			<h style="color:white;font-size:30px;">AllThoughts</h>
+			<div id="links">
+				by <a href="https://ozarksmade.net">OzarksMade</a>
+			</div>
+		</header>
+		<div id="page" style="bottom:35px;left:11px;overflow:auto;padding-bottom:11px;position:absolute;right:11px;top:80px;">
+			<div id="welcome" style="border-radius:5px;border:solid #FF5722;margin-bottom:10px;margin-top:5px;padding:10px;">
+				<h style="color:#FF5722;font-size:20px;">Think a Thought</h>
+				<p style="margin:0px;">Think a new thought so that it will be live here on AllThoughts.</p>
+				<p>Author:</p>
+				<div id="g_signin_button" class="g_id_signin"
+					data-text="continue_with">
+				</div>
+				<div id="author"></div>
+				<p>Thought:</p>
+				<textarea id="thought" placeholder="Write your thought..." style="margin-bottom:8px;min-height:150px;width:100%;"></textarea>
+				<div style="text-align:center;"><div class="g-recaptcha" data-sitekey="6LcKOjAjAAAAALpIXbh7iD6ms6Ps6TwNLdNWPeXM" style="display:inline-block"></div></div>
+				<div style="margin-top:8px;text-align:center;"><button onClick="sendThought();" style="border:solid #FF5722;color:#FF5722;font-size:18px;">Add Thought</button></div>
+			</div>
+			<div id="credits" style="display:table;height:40px;">
+				<p id="copyright" style="display:table-cell;padding-left:8px;margin:0px;vertical-align:bottom;">Copyright ©2021-2023 OzarksMade v2.0</p>
+			</div>
+			<div id="legallinks" style="text-align:center;">
+				<a href="terms.html">Terms</a>
+				<a href="privacy.html">Privacy</a>
+			</div>
+		</div>
+		<div id="footer" style="bottom:3px;height:30px;left:11px;position:absolute;right:11px;text-align:center;">
+			<button onClick="location.href='think.html'" style="background-color:#FFEBEE;border:solid #FF5722;color:#FF5722;font-size:20px;">Think</button>
+			<button onClick="location.href='thoughts.html'" style="background-color:#FFEBEE;border:solid #FF5722;color:#FF5722;font-size:20px;">Thoughts</button>
+			<button onClick="location.href='about.html'" style="background-color:#FFEBEE;border:solid #FF5722;color:#FF5722;font-size:20px;">About</button>
+		</div>
+	</body>
+</html>

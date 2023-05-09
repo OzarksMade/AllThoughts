@@ -1,0 +1,17 @@
+{
+  "name": "AllThoughts™",
+  "short_name": "AllThoughts",
+  "theme_color": "ff5722",
+  "background_color": "ffffff",
+  "start_url": "./thoughts.html",
+  "id": "all-thoughts",
+  "display": "standalone",
+  "scope": "./",
+  "icons": [
+     {
+      "src": "logo.png",
+      "sizes": "256x256",
+      "type": "image/png"
+     }
+   ]
+}
