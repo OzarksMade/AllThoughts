@@ -111,4 +111,4 @@ function fetchServer() {
 	fetch("https://allthoughts.ozarksmade.net");
 }
 
-//setInterval(fetchServer, 60000);
+setInterval(fetchServer, 600000);
