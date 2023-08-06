@@ -43,12 +43,16 @@ app.get("/terms.html", (request, response) => {
 	response.sendFile(__dirname + "/terms.html");
 });
 
-app.get("/thoughts.json", (request, response) => {
-	response.sendFile(__dirname + "/thoughts.json");
+app.get("/logo", (request, response) => {
+	response.sendFile(__dirname + "/logo.png");
 });
 
 app.get("/logo.png", (request, response) => {
 	response.sendFile(__dirname + "/logo.png");
+});
+
+app.get("/thoughts.json", (request, response) => {
+	response.sendFile(__dirname + "/thoughts.json");
 });
 
 app.get("/manifest.json", (request, response) => {
